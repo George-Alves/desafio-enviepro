@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --tinta: #0b1722;
+  --lagoa: #14808f;
+  --indigo: #3a3f8f;
+  --acafrao: #e8a33d;
+  --texto: #f3f6f9;
+  --texto-suave: #b9c6d2;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-tinta: var(--tinta);
+  --color-lagoa: var(--lagoa);
+  --color-acafrao: var(--acafrao);
+  --color-texto: var(--texto);
+  --color-texto-suave: var(--texto-suave);
+  --font-sans: var(--font-corpo);
+  --font-display: var(--font-titulo);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* O vidro só aparece se houver algo colorido atrás dele: por isso o fundo tem manchas de luz. */
+body {
+  min-height: 100dvh;
+  color: var(--texto);
+  font-family: var(--font-corpo), system-ui, sans-serif;
+  background-color: var(--tinta);
+  background-image:
+    radial-gradient(60rem 40rem at 8% -10%, color-mix(in srgb, var(--lagoa) 70%, transparent), transparent 60%),
+    radial-gradient(50rem 40rem at 105% 15%, color-mix(in srgb, var(--indigo) 75%, transparent), transparent 60%),
+    radial-gradient(40rem 30rem at 55% 115%, color-mix(in srgb, var(--acafrao) 38%, transparent), transparent 65%);
+  background-attachment: fixed;
+}
+
+/* Painel de vidro: fundo translúcido, desfoque, borda suave e um brilho fino no topo. */
+.vidro {
+  background: rgb(255 255 255 / 0.07);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  box-shadow:
+    0 10px 40px rgb(0 0 0 / 0.28),
+    inset 0 1px 0 rgb(255 255 255 / 0.14);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+
+/* Navegadores sem backdrop-filter: painel quase opaco, para o texto continuar legível. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .vidro {
+    background: rgb(17 34 48 / 0.94);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:focus-visible {
+  outline: 2px solid var(--acafrao);
+  outline-offset: 2px;
 }
