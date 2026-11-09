@@ -1,0 +1,102 @@
+[
+  {
+    "numero": 1,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "planejamento",
+    "objetivo": "entender o desafio e montar um planejamento passo a passo usando o padrão de projeto indicado",
+    "prompt": "[anexei o PDF do desafio] Claude eu preciso realizar um desafio de desenvolvimento usando um padrão de projeto. Vou deixar dois documentos aqui. peço que analise e monte um planejamento passo a passo de como construir o sistema proposto no desafio. O padrão do projeto está no link: https://claude.ai/artifact/54yKJZafizT9K87sWc1o8x#14aa7aac-a518",
+    "resultado": "deu erro",
+    "observacao": "A IA leu o PDF, mas não conseguiu abrir o link do padrão (o documento não estava compartilhado). Ela avisou, entregou um plano só com o PDF e pediu que eu colasse o texto. Resolvido no prompt 2."
+  },
+  {
+    "numero": 2,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "planejamento",
+    "objetivo": "dar à IA o conteúdo do padrão de projeto que ela não conseguiu abrir",
+    "prompt": "[colei o texto inteiro do documento \"Padrões de projeto do Atlantis\": Clean Architecture com Portas e Adaptadores no back-end e arquitetura por features no front-end]",
+    "resultado": "funcionou",
+    "observacao": "Com o padrão em mãos, a IA refez o plano. Decidiu adotar só o que cabe num CRM pequeno (domínios com entity/ports/usecase/adapter, Repository, DTO, React Query, camada de serviço) e deixar de fora o que seria exagero (multi-tenant, Outbox, BFF e outros)."
+  },
+  {
+    "numero": 3,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "0 - preparar computador",
+    "objetivo": "começar o desafio e decidir quais ferramentas usar",
+    "prompt": "Vamos começar então! Vou instalar o cursor, mas a eu vou seguir usando o claude code no desktop",
+    "resultado": "funcionou",
+    "observacao": "A IA conferiu o computador: Git e Node já estavam instalados; faltavam Go e Cursor. Ela também avisou que o Claude Code desktop não aparece na lista de IAs permitidas do PDF, então precisa ser declarado no relatório."
+  },
+  {
+    "numero": 4,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "1 - repositório",
+    "objetivo": "criar o repositório público desafio-enviepro no GitHub",
+    "prompt": "Baixei o cursor e o go, pode criar o repositório",
+    "resultado": "deu erro",
+    "observacao": "O sistema de permissões bloqueou a criação de um repositório público pela IA. Eu mesmo criei o repositório (prompt 5)."
+  },
+  {
+    "numero": 5,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "1 - repositório",
+    "objetivo": "avisar que o repositório existe e continuar o passo 1",
+    "prompt": "repositório criado",
+    "resultado": "funcionou",
+    "observacao": "A IA clonou o repositório, criou o .gitignore do PDF e fez o primeiro commit e push na main."
+  },
+  {
+    "numero": 6,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "2 - estrutura",
+    "objetivo": "criar a estrutura inicial: Next.js em frontend/, módulo Go em backend/ e pastas por domínio",
+    "prompt": "Sim, começar",
+    "resultado": "funcionou",
+    "observacao": "Teste do passo: npm run dev abriu a página do Next em localhost:3000."
+  },
+  {
+    "numero": 7,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "3 - banco e back-end",
+    "objetivo": "criar o banco SQLite com seed, as regras de negócio e a API em Go com as 4 rotas e CORS",
+    "prompt": "Sim, Passo 3",
+    "resultado": "funcionou",
+    "observacao": "Os testes do Go passaram e as 4 rotas responderam. A porta 8080 do meu computador já estava ocupada por outro programa, então a API foi testada na 8081."
+  },
+  {
+    "numero": 8,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "4 - layout e sidebar",
+    "objetivo": "criar a sidebar retrátil com visual glassmorphism e as páginas Início, CRM e Configurações",
+    "prompt": "Sim, Passo 4",
+    "resultado": "funcionou",
+    "observacao": "Testada no desktop (recolher e expandir) e no celular (gaveta que abre e fecha com Esc, clique fora e escolha de item)."
+  },
+  {
+    "numero": 9,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "5 - aba CRM",
+    "objetivo": "criar o painel do CRM: cards de resumo, funil de vendas e tabela de clientes com busca, filtro e alerta",
+    "prompt": "Sim, Passo 5",
+    "resultado": "funcionou",
+    "observacao": "No teste a IA achou e corrigiu valores cortados nos cards no celular. Para provar que os dados vêm do SQLite, um dado foi mudado direto no banco e a tela mudou junto."
+  },
+  {
+    "numero": 10,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "6 - organizar e entregar",
+    "objetivo": "limpar o projeto, escrever o README, criar o prompts.json e o esqueleto do relatório",
+    "prompt": "Sim, Passo 6",
+    "resultado": "funcionou",
+    "observacao": ""
+  }
+]
