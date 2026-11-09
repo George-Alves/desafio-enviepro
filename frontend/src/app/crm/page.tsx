@@ -1,14 +1,11 @@
-import { GlassCard } from "@/components/ui/GlassCard";
+import { PainelCrm } from "@/features/crm";
 
 export default function CrmPage() {
   return (
-    <div className="max-w-2xl">
+    <div className="mx-auto max-w-5xl">
       <h1 className="font-display text-4xl font-semibold tracking-tight">CRM</h1>
-      <GlassCard className="mt-6 p-6">
-        <p className="text-texto-suave">
-          O painel com clientes, funil e vendas ainda está sendo montado. Ele vai aparecer aqui.
-        </p>
-      </GlassCard>
+      <p className="mt-2 mb-6 text-texto-suave">Vendas do mês, funil e acompanhamento dos clientes.</p>
+      <PainelCrm />
     </div>
   );
 }

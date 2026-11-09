@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Figtree } from "next/font/google";
 import { AppShell } from "@/features/layout";
+import { ReactQueryProvider } from "@/lib/react-query/provider";
 import "./globals.css";
 
 const titulo = Bricolage_Grotesque({
@@ -22,7 +23,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${titulo.variable} ${corpo.variable} antialiased`}>
       <body>
-        <AppShell>{children}</AppShell>
+        <ReactQueryProvider>
+          <AppShell>{children}</AppShell>
+        </ReactQueryProvider>
       </body>
     </html>
   );

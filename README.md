@@ -28,8 +28,8 @@ Arquivos na raiz de `backend/`: `main.go` (liga as peças e sobe a API), `db.go`
 |---|---|
 | `src/app` | Rotas do Next.js; só compõem as telas |
 | `src/features/<área>` | Tudo de uma área junto: `components`, `hooks`, `services`, `types` |
-| `src/components/ui` | Peças compartilhadas (card com glassmorphism, tabela) |
-| `src/lib` | Cliente HTTP único e configuração do React Query |
+| `src/components/ui` | Peças compartilhadas (`GlassCard`, `StatCard`, esqueleto de carregamento, bloco de erro) |
+| `src/lib` | Cliente HTTP único (`api/client.ts`, URL em `NEXT_PUBLIC_API_URL`), React Query e formatadores |
 
 ### O que ficou de fora de propósito
 
