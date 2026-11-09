@@ -11,3 +11,6 @@ backend/*.exe
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Banco SQLite local (gerado pelo seed; as datas são relativas ao dia em que roda)
+backend/*.db
