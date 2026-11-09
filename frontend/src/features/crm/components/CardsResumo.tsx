@@ -27,13 +27,14 @@ export function CardsResumo() {
         rotulo="Total de vendas no mês"
         valor={resumo.data && formatarMoeda(resumo.data.total)}
         carregando={resumo.isPending}
-        destaque
+        tom="lavanda"
         className="col-span-2 sm:col-span-1"
       />
       <StatCard
         rotulo="Ticket médio"
         valor={resumo.data && formatarMoeda(resumo.data.ticketMedio)}
         carregando={resumo.isPending}
+        tom="violeta"
         className="col-span-2 sm:col-span-1"
       />
       <StatCard
@@ -43,12 +44,14 @@ export function CardsResumo() {
           resumo.data ? (resumo.data.quantidade === 1 ? "venda fechada" : "vendas fechadas") : undefined
         }
         carregando={resumo.isPending}
+        tom="indigo"
       />
       <StatCard
         rotulo="Clientes ativos"
         valor={clientes.isError ? "—" : ativos}
         detalhe={clientes.data ? `de ${clientes.data.length} clientes` : undefined}
         carregando={clientes.isPending}
+        tom="orquidea"
       />
     </section>
   );

@@ -24,7 +24,7 @@ export function FunilVendas() {
   const semOportunidades = funil.isSuccess && etapas.every((e) => e.quantidade === 0);
 
   return (
-    <GlassCard className="p-5 md:p-6" aria-labelledby="titulo-funil" role="region">
+    <GlassCard className="p-6 md:p-7" aria-labelledby="titulo-funil" role="region">
       <h2 id="titulo-funil" className="font-display text-xl font-semibold">
         Funil de vendas
       </h2>
@@ -59,7 +59,9 @@ export function FunilVendas() {
                     </div>
                     <div className="mt-1.5 h-3 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
                       <div
-                        className={`h-full rounded-full ${fechada ? "bg-acafrao" : "bg-lagoa"}`}
+                        className={`h-full rounded-full bg-gradient-to-r ${
+                          fechada ? "from-lavanda to-nevoa" : "from-violeta to-lavanda"
+                        }`}
                         style={{ width: `${largura}%` }}
                       />
                     </div>

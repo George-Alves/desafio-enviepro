@@ -1,0 +1,2 @@
+# O banco SQLite é binário: o Git não pode mexer nas quebras de linha dele
+*.db binary

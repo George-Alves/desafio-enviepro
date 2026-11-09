@@ -98,5 +98,25 @@
     "prompt": "Sim, Passo 6",
     "resultado": "funcionou",
     "observacao": ""
+  },
+  {
+    "numero": 11,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "7 - revisão",
+    "objetivo": "revisar o prompts.json antes de entregar",
+    "prompt": "Sim, revisar",
+    "resultado": "funcionou",
+    "observacao": "A IA apontou o que faltava: prompts de outras IAs, horas, e observações escritas por ela na minha voz que eu precisava conferir."
+  },
+  {
+    "numero": 12,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "7 - ajustes depois da entrega",
+    "objetivo": "comparar o projeto com a estrutura do PDF, corrigir o botão de recolher o menu, refazer o visual a partir de duas referências e conferir se o desafio pede cadastro de clientes",
+    "prompt": "1. Faça uma verificação na estrutura atual do projeto x a estrutura proposta no desafio! Notei arquivos faltando como crm.db 2. Verifique a função de recolher o side menu, pois essa opção não apareceu. 3. Além disso, quero ajustar o front para o seguintes exemplos anexos 4. O desafio não pede uma forma cadastrar clientes no crm? [anexei duas capturas de tela: uma paleta de 6 cores roxas e um exemplo de \"Glassy Dashboard\"]",
+    "resultado": "funcionou",
+    "observacao": "1) O crm.db estava no .gitignore e passou a ser versionado, como no PDF. 2) O botão existia, mas ficava no canto de baixo e o indicador do Next em modo de desenvolvimento cobria o ícone; foi para o topo da sidebar. 3) Visual refeito com a paleta roxa e cartões de vidro coloridos. Ao testar, a IA achou um erro de CORS quando o Next sobe na porta 3001 e liberou qualquer porta do localhost. 4) O PDF não pede cadastro de clientes."
   }
 ]

@@ -59,7 +59,7 @@ func main() {
 func montarRoteador(db *sql.DB) *gin.Engine {
 	r := gin.Default()
 	_ = r.SetTrustedProxies(nil)
-	r.Use(middleware.CORS("http://localhost:3000", "http://127.0.0.1:3000"))
+	r.Use(middleware.CORS(middleware.OrigemLocal))
 
 	clientes := clienteRepo.NewSQLiteClienteRepository(db)
 	funil := funilRepo.NewSQLiteFunilRepository(db)

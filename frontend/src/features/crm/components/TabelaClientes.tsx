@@ -25,7 +25,7 @@ function textoDias(dias: number): string {
 }
 
 const CAMPO =
-  "rounded-xl border border-white/15 bg-white/10 px-3.5 py-2.5 text-texto placeholder:text-texto-suave";
+  "rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-texto placeholder:text-texto-suave";
 
 export function TabelaClientes() {
   const clientes = useClientes();
@@ -55,7 +55,7 @@ export function TabelaClientes() {
   };
 
   return (
-    <GlassCard className="p-5 md:p-6" role="region" aria-labelledby="titulo-clientes">
+    <GlassCard className="p-6 md:p-7" role="region" aria-labelledby="titulo-clientes">
       <h2 id="titulo-clientes" className="font-display text-xl font-semibold">
         Clientes
       </h2>
@@ -103,12 +103,12 @@ export function TabelaClientes() {
           ))}
         </div>
       ) : filtrados.length === 0 ? (
-        <div className="mt-3 rounded-xl bg-white/5 p-5 text-texto-suave">
+        <div className="mt-3 rounded-2xl bg-white/5 p-5 text-texto-suave">
           <p>Nenhum cliente encontrado com esses filtros.</p>
           <button
             type="button"
             onClick={limparFiltros}
-            className="mt-3 rounded-xl bg-white/12 px-4 py-2 font-medium text-texto transition-colors hover:bg-white/20 motion-reduce:transition-none"
+            className="mt-3 rounded-full bg-white/12 px-5 py-2 font-medium text-texto transition-colors hover:bg-white/20 motion-reduce:transition-none"
           >
             Limpar filtros
           </button>
@@ -132,7 +132,7 @@ export function TabelaClientes() {
                   <tr key={c.id} className={linha}>
                     <th
                       scope="row"
-                      className={`rounded-l-xl px-4 py-3 font-medium ${
+                      className={`rounded-l-2xl px-5 py-3 font-medium ${
                         c.alerta ? "shadow-[inset_3px_0_0_#ff8a7a]" : ""
                       }`}
                     >
@@ -141,7 +141,7 @@ export function TabelaClientes() {
                     </th>
                     <td className={`px-4 py-3 ${STATUS[c.status].cor}`}>{STATUS[c.status].rotulo}</td>
                     <td className="px-4 py-3">{c.responsavel}</td>
-                    <td className="rounded-r-xl px-4 py-3">
+                    <td className="rounded-r-2xl px-5 py-3">
                       <span className={c.alerta ? "font-semibold text-[#ffb4a8]" : ""}>
                         {formatarData(c.ultimoContato)}
                       </span>

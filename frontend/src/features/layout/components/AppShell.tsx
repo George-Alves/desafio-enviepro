@@ -40,19 +40,22 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div
           aria-hidden="true"
           onClick={() => setAberta(false)}
-          className="fixed inset-0 z-30 bg-tinta/60 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-30 bg-noite/60 backdrop-blur-sm md:hidden"
         />
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <GlassCard className="sticky top-3 z-20 mx-3 mt-3 flex items-center gap-3 px-3 py-2 md:hidden">
+        <GlassCard
+          formato="pilula"
+          className="sticky top-3 z-20 mx-3 mt-3 flex items-center gap-3 px-2.5 py-2 md:hidden"
+        >
           <button
             type="button"
             onClick={() => setAberta(true)}
             aria-label="Abrir menu"
             aria-expanded={aberta}
             aria-controls={ID_MENU}
-            className="grid size-10 place-items-center rounded-lg hover:bg-white/10"
+            className="grid size-10 place-items-center rounded-full bg-white/10 hover:bg-white/20"
           >
             <IconeMenu />
           </button>

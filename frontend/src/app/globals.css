@@ -1,56 +1,112 @@
 @import "tailwindcss";
 
 :root {
-  --tinta: #0b1722;
-  --lagoa: #14808f;
-  --indigo: #3a3f8f;
-  --acafrao: #e8a33d;
-  --texto: #f3f6f9;
-  --texto-suave: #b9c6d2;
+  --noite: #0e0b1d;
+  --ameixa: #2a1e4d;
+  --violeta: #5a3b8c;
+  --lavanda: #8b7cc7;
+  --nevoa: #c9c2e3;
+  --ardosia: #3a3a52;
+  --brilho: #8b5cf6;
+  --texto: #f4f1ff;
+  --texto-suave: #c9c2e3;
+  --alerta: #ff8a7a;
 }
 
 @theme inline {
-  --color-tinta: var(--tinta);
-  --color-lagoa: var(--lagoa);
-  --color-acafrao: var(--acafrao);
+  --color-noite: var(--noite);
+  --color-ameixa: var(--ameixa);
+  --color-violeta: var(--violeta);
+  --color-lavanda: var(--lavanda);
+  --color-nevoa: var(--nevoa);
+  --color-ardosia: var(--ardosia);
   --color-texto: var(--texto);
   --color-texto-suave: var(--texto-suave);
+  --color-alerta: var(--alerta);
   --font-sans: var(--font-corpo);
   --font-display: var(--font-titulo);
 }
 
-/* O vidro só aparece se houver algo colorido atrás dele: por isso o fundo tem manchas de luz. */
+/* O vidro só aparece se houver algo colorido atrás dele: por isso o fundo tem faixas de luz
+   nas laterais (a mais forte fica atrás do menu, que a desfoca). */
 body {
   min-height: 100dvh;
   color: var(--texto);
   font-family: var(--font-corpo), system-ui, sans-serif;
-  background-color: var(--tinta);
+  background-color: var(--noite);
   background-image:
-    radial-gradient(60rem 40rem at 8% -10%, color-mix(in srgb, var(--lagoa) 70%, transparent), transparent 60%),
-    radial-gradient(50rem 40rem at 105% 15%, color-mix(in srgb, var(--indigo) 75%, transparent), transparent 60%),
-    radial-gradient(40rem 30rem at 55% 115%, color-mix(in srgb, var(--acafrao) 38%, transparent), transparent 65%);
+    radial-gradient(26rem 38rem at -8% 42%, color-mix(in srgb, var(--brilho) 46%, transparent), transparent 70%),
+    radial-gradient(26rem 38rem at 108% 58%, color-mix(in srgb, var(--brilho) 40%, transparent), transparent 70%),
+    radial-gradient(70rem 26rem at 50% -14%, color-mix(in srgb, var(--violeta) 60%, transparent), transparent 72%);
   background-attachment: fixed;
 }
 
-/* Painel de vidro: fundo translúcido, desfoque, borda suave e um brilho fino no topo. */
-.vidro {
-  background: rgb(255 255 255 / 0.07);
-  border: 1px solid rgb(255 255 255 / 0.16);
-  box-shadow:
-    0 10px 40px rgb(0 0 0 / 0.28),
-    inset 0 1px 0 rgb(255 255 255 / 0.14);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  backdrop-filter: blur(20px) saturate(150%);
+/* Dentro de @layer components para que classes do Tailwind (borda, cor de fundo) possam sobrescrever. */
+@layer components {
+  /* Painel de vidro: fundo translúcido, desfoque, borda suave e um brilho fino no topo. */
+  .vidro {
+    background: rgb(255 255 255 / 0.07);
+    border: 1px solid rgb(255 255 255 / 0.16);
+    box-shadow:
+      0 12px 40px rgb(8 4 24 / 0.4),
+      inset 0 1px 0 rgb(255 255 255 / 0.16);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    backdrop-filter: blur(22px) saturate(160%);
+  }
+
+  /* Tons: o vidro ganha uma cor, como nos cartões da referência. */
+  .vidro-violeta {
+    background: linear-gradient(145deg, rgb(125 80 200 / 0.44), rgb(255 255 255 / 0.05));
+  }
+  .vidro-lavanda {
+    background: linear-gradient(145deg, rgb(139 124 199 / 0.42), rgb(255 255 255 / 0.05));
+  }
+  .vidro-indigo {
+    background: linear-gradient(145deg, rgb(86 98 215 / 0.4), rgb(255 255 255 / 0.05));
+  }
+  .vidro-orquidea {
+    background: linear-gradient(145deg, rgb(176 92 192 / 0.36), rgb(255 255 255 / 0.05));
+  }
+
+  /* O cartão sobe um pouco quando o mouse passa por cima. */
+  .vidro-eleva {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .vidro-eleva:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 20px 48px rgb(8 4 24 / 0.5),
+      inset 0 1px 0 rgb(255 255 255 / 0.2);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vidro-eleva {
+      transition: none;
+    }
+    .vidro-eleva:hover {
+      transform: none;
+    }
+  }
 }
 
 /* Navegadores sem backdrop-filter: painel quase opaco, para o texto continuar legível. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .vidro {
-    background: rgb(17 34 48 / 0.94);
+  .vidro,
+  .vidro-violeta,
+  .vidro-lavanda,
+  .vidro-indigo,
+  .vidro-orquidea {
+    background: rgb(28 20 56 / 0.95);
   }
 }
 
 :focus-visible {
-  outline: 2px solid var(--acafrao);
+  outline: 2px solid var(--nevoa);
   outline-offset: 2px;
+}
+
+select option {
+  background: var(--ameixa);
+  color: var(--texto);
 }

@@ -125,11 +125,15 @@ func TestAPI_CORSLiberaOFrontELogoNaoLiberaOutrasOrigens(t *testing.T) {
 		r.ServeHTTP(w, req)
 		return w
 	}
-	if got := pedir("http://localhost:3000").Header().Get("Access-Control-Allow-Origin"); got != "http://localhost:3000" {
-		t.Errorf("front deveria ser liberado, cabeçalho veio %q", got)
+	for _, origem := range []string{"http://localhost:3000", "http://localhost:3001", "http://127.0.0.1:3000"} {
+		if got := pedir(origem).Header().Get("Access-Control-Allow-Origin"); got != origem {
+			t.Errorf("%s deveria ser liberada, cabeçalho veio %q", origem, got)
+		}
 	}
-	if got := pedir("http://site-qualquer.com").Header().Get("Access-Control-Allow-Origin"); got != "" {
-		t.Errorf("origem estranha não deveria ser liberada, cabeçalho veio %q", got)
+	for _, origem := range []string{"http://site-qualquer.com", "http://localhost.evil.com", "https://localhost:3000"} {
+		if got := pedir(origem).Header().Get("Access-Control-Allow-Origin"); got != "" {
+			t.Errorf("%s não deveria ser liberada, cabeçalho veio %q", origem, got)
+		}
 	}
 }
 

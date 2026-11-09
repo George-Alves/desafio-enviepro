@@ -39,7 +39,7 @@ go mod tidy
 go run .
 ```
 
-Na primeira vez, o programa cria o arquivo `backend/crm.db` e enche o banco com dados fictícios (20 clientes, 30 oportunidades e 25 vendas). Quando aparecer `API rodando em http://localhost:8080`, deixe esse terminal aberto.
+O banco `backend/crm.db` já vem no repositório com dados fictícios (20 clientes, 30 oportunidades e 25 vendas). Se o arquivo não existir ou estiver vazio, o programa cria e popula tudo sozinho. Quando aparecer `API rodando em http://localhost:8080`, deixe esse terminal aberto.
 
 Para conferir, abra <http://localhost:8080/clientes> no navegador: deve aparecer uma lista em JSON.
 
@@ -73,11 +73,13 @@ Se o `go run .` mostrar erro de porta, ou se o <http://localhost:8080/clientes> 
    NEXT_PUBLIC_API_URL=http://localhost:8081
    ```
 
+O front pode abrir em qualquer porta do `localhost`: se a 3000 estiver ocupada, o Next usa a 3001 sozinho e a API continua aceitando as chamadas.
+
 ## Dados fictícios
 
-O banco é gerado, não está no repositório. As datas dos dados são calculadas a partir do dia em que o seed roda, então sempre há vendas no mês atual e clientes sem contato recente.
+O arquivo `backend/crm.db` foi gerado pelo `seed.go` e está no repositório. As datas dos dados são calculadas a partir do dia em que o seed rodou (09/11/2026). Por isso, com o passar do tempo, o "resumo do mês" pode ficar vazio e os clientes aparecem com mais dias sem contato.
 
-Para apagar tudo e gerar os dados de novo, com o back-end parado:
+Para apagar tudo e gerar os dados de novo, com datas relativas a hoje, com o back-end parado:
 
 ```bash
 cd backend
