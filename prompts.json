@@ -118,5 +118,275 @@
     "prompt": "1. Faça uma verificação na estrutura atual do projeto x a estrutura proposta no desafio! Notei arquivos faltando como crm.db 2. Verifique a função de recolher o side menu, pois essa opção não apareceu. 3. Além disso, quero ajustar o front para o seguintes exemplos anexos 4. O desafio não pede uma forma cadastrar clientes no crm? [anexei duas capturas de tela: uma paleta de 6 cores roxas e um exemplo de \"Glassy Dashboard\"]",
     "resultado": "funcionou",
     "observacao": "1) O crm.db estava no .gitignore e passou a ser versionado, como no PDF. 2) O botão existia, mas ficava no canto de baixo e o indicador do Next em modo de desenvolvimento cobria o ícone; foi para o topo da sidebar. 3) Visual refeito com a paleta roxa e cartões de vidro coloridos. Ao testar, a IA achou um erro de CORS quando o Next sobe na porta 3001 e liberou qualquer porta do localhost. 4) O PDF não pede cadastro de clientes."
+  },
+  {
+    "numero": 13,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "7 - ajustes depois da entrega",
+    "objetivo": "responder se o cadastro de clientes deveria ser adicionado como extra",
+    "prompt": "Não, só o PDF",
+    "resultado": "funcionou",
+    "observacao": "O sistema ficou só com o que o PDF pede, sem cadastro de clientes."
+  },
+  {
+    "numero": 14,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "7 - ajustes depois da entrega",
+    "objetivo": "descobrir por que o visual novo não aparecia",
+    "prompt": "[anexei uma captura de tela do localhost:3000 mostrando o visual antigo] as melhorias do visual não foram aplicados",
+    "resultado": "funcionou",
+    "observacao": "A captura mostrava o visual antigo porque o localhost:3000 era servido por outra cópia do projeto, parada numa versão anterior. A IA explicou que era preciso parar os servidores e rodar git pull nessa cópia."
+  },
+  {
+    "numero": 15,
+    "data": "2026-11-09",
+    "ia": "claude",
+    "passo": "7 - relatório",
+    "objetivo": "passar as minhas respostas do roteiro para o RELATORIO.md",
+    "prompt": "para add no relatório.md 1. Não cheguei a organizar o tempo, eu queria testar a capacidade da IA e botei ela para analisar o desafio, o modelo de projeto e iniciar o planejamento 2. Apenas o Claude, na versão claude Code desktop usando o modelo Sonnet 5.5 3. A decisão mais importante foi orientar a IA seguir o desafio 4. Sim, nunca usei o cursor antes como IDE, tive problemas no terminal par rodar os comandos do node, travei nisso e resolvi ir por outro terminal. 5. Pq fazer o projeto sem o crud? A ideia era testar apenas a forma que uso a IA? 6. Pela orientação que passei para o claude, e acompanhando os merges no github. 7. O desafio não pede um mock do projeto, acho que eu faria isso antes de codar, e adicionaria uma etapa de add um crud no crm para ver o funcionamento dele com um usuário ativo.",
+    "resultado": "funcionou",
+    "observacao": "A IA transcreveu as respostas para o RELATORIO.md corrigindo só a ortografia, e sugeriu pontos para complementar (dias, limites de uso, outras decisões)."
+  },
+  {
+    "numero": 16,
+    "data": "2026-11-11",
+    "ia": "claude",
+    "passo": "Desafio 2 - revisão das issues",
+    "objetivo": "revisar se as issues e as branches que criei à mão seguem o documento do Desafio 2",
+    "prompt": "[anexei uma captura do documento do Desafio 2 com o fluxo obrigatório de issues] Claude, cheguei na segunda parte do desafio do CRM, agora tenho algumas etapas a mais a serem realizadas! Eu gostaria de uma revisão na parte das issues que eu criei manualmente de acordo com o documento do segundo desafio. Verifique se as issues e as branchs de cada uma delas foram criadas da maneira correta no github",
+    "resultado": "funcionou",
+    "observacao": "Foi só leitura. A IA achou 11 labels faltando, branches com nome fora do padrão (geradas pelo botão do GitHub, com acento), branches 2 a 6 criadas cedo demais (todas na mesma ponta da main) e 23 de 26 referências sem link."
+  },
+  {
+    "numero": 17,
+    "data": "2026-11-11",
+    "ia": "claude",
+    "passo": "Desafio 2 - revisão das issues",
+    "objetivo": "aplicar as correções apontadas nas issues e nas branches",
+    "prompt": "Sim, corrigir",
+    "resultado": "funcionou",
+    "observacao": "Adicionou as 11 labels, apagou as 6 branches vazias e criou issue-1-crud-usuarios ligada à issue #1. Ao apagar as branches ficaram vínculos fantasmas nas issues, que a IA também removeu."
+  },
+  {
+    "numero": 18,
+    "data": "2026-11-11",
+    "ia": "claude",
+    "passo": "Desafio 2 - revisão das issues",
+    "objetivo": "colocar os endereços nas referências das issues",
+    "prompt": "Sim, colocar links",
+    "resultado": "funcionou",
+    "observacao": "23 links novos, todos testados (resposta 200) antes de editar. Um endereço do Gin estava errado e foi corrigido. A IA avisou que no Next 16 o middleware.ts virou proxy.ts."
+  },
+  {
+    "numero": 19,
+    "data": "2026-11-11",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1",
+    "objetivo": "começar o CRUD de usuários, pedindo as perguntas antes de começar",
+    "prompt": "Vamos começar a issue #1: No meu backend Go com Gin e SQLite (driver modernc.org/sqlite) quero criar um CRUD de usuários. A senha deve ser salva com hash bcrypt (golang.org/x/crypto/bcrypt). O JSON de resposta nunca pode conter o hash. E-mail é único. Papel só aceita \"admin\" ou \"vendedor\". Valide entrada e devolva erros claros. Me entregue um arquivo por vez, começando pela tabela, e explique cada função antes do código. Antes de começar, me faça todas as perguntas que você precisa para fazer isso bem.",
+    "resultado": "funcionou",
+    "observacao": "Segui o ritual do PDF e pedi que a IA fizesse perguntas antes. Ela perguntou sobre o formato de entrega, a senha do admin, o PUT com senha e quem faz o commit e o PR. A janela de perguntas foi interrompida na primeira tentativa e precisou ser repetida (prompt seguinte)."
+  },
+  {
+    "numero": 20,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1",
+    "objetivo": "pedir de novo as perguntas, porque a primeira tentativa não chegou até mim",
+    "prompt": "pergunte de novo",
+    "resultado": "funcionou",
+    "observacao": "Respondi: escrever no repositório e parar a cada arquivo; senha do admin por ADMIN_SENHA; PUT com senha opcional; a IA faz os commits e eu abro o Pull Request. Depois disso foi entregue o arquivo 1 (tabela usuarios)."
+  },
+  {
+    "numero": 21,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 1)",
+    "objetivo": "tirar dúvidas depois do arquivo 1 (a tabela usuarios)",
+    "prompt": "Tenho dúvidas",
+    "resultado": "entendi",
+    "observacao": "Eu não disse qual era a dúvida, então a IA listou os pontos do arquivo 1 que mais geram dúvida e pediu que eu escrevesse a minha."
+  },
+  {
+    "numero": 22,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (fluxo de Git)",
+    "objetivo": "entender se o que foi feito já estava mesclado no repositório",
+    "prompt": "a minha dúvida é sobre o fluxo do desenvolvimento, você desenvolve a primeira parte, oque foi feito foi comitado e mergeado para o repositório ou preciso tomar alguma ação?",
+    "resultado": "entendi",
+    "observacao": "A IA explicou as 4 etapas (commit, push, Pull Request e merge) e que até ali só havia um commit local, sem push nem merge."
+  },
+  {
+    "numero": 23,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 2)",
+    "objetivo": "autorizar o push depois de cada commit e seguir para o arquivo 2",
+    "prompt": "Fiz o comentário, e já fiz todas as pesquisas da issue no gemini pode dar push depois de cada commit",
+    "resultado": "funcionou",
+    "observacao": "Informei que as pesquisas da issue foram feitas no Gemini (esses prompts não estão neste arquivo). A IA enviou o commit do arquivo 1 e entregou o arquivo 2: a entidade Usuario e as regras de validação, com teste escrito antes."
+  },
+  {
+    "numero": 24,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 2)",
+    "objetivo": "tirar dúvidas depois do arquivo 2",
+    "prompt": "Tenho dúvidas",
+    "resultado": "entendi",
+    "observacao": "A IA listou os pontos do arquivo 2 que mais geram dúvida (ErroCampo, normalização do e-mail, limite de 72 bytes do bcrypt) e pediu a dúvida específica."
+  },
+  {
+    "numero": 25,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (tarefas da issue)",
+    "objetivo": "questionar a divisão em arquivos e perguntar quando as caixas seriam marcadas",
+    "prompt": "Você está se referindo em arquivos, como você organizou isso sendo que na issue não menciona arquivos, e sim tarefas, que inclusive nenhuma ainda foi marcada como concluída, você irá marcar?",
+    "resultado": "entendi",
+    "observacao": "A IA admitiu que a divisão em arquivos era dela, mostrou como cada arquivo se liga às tarefas da issue e combinou marcar cada caixa só depois de provar a tarefa."
+  },
+  {
+    "numero": 26,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (tarefas da issue)",
+    "objetivo": "autorizar a marcação da primeira tarefa",
+    "prompt": "Pode marcar a tarefa da tabela agora",
+    "resultado": "funcionou",
+    "observacao": "Só a caixa da tabela foi marcada. O resto da issue ficou idêntico (a IA guardou uma cópia do texto antes de editar)."
+  },
+  {
+    "numero": 27,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 3)",
+    "objetivo": "seguir para o arquivo 3: a porta UsuarioRepository",
+    "prompt": "Próximo arquivo",
+    "resultado": "funcionou",
+    "observacao": "Interface sem lógica, com os erros combinados. A IA deixou BuscarPorEmail de fora, porque só o login (issue #2) precisa dela."
+  },
+  {
+    "numero": 28,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 4)",
+    "objetivo": "seguir para o arquivo 4: o repositório SQLite",
+    "prompt": "Próximo arquivo",
+    "resultado": "funcionou",
+    "observacao": "5 testes em banco real, escritos antes do código. A violação do UNIQUE do SQLite é traduzida para ErrEmailJaCadastrado pelo código do erro."
+  },
+  {
+    "numero": 29,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 5)",
+    "objetivo": "seguir para o arquivo 5: os casos de uso com hash bcrypt",
+    "prompt": "Próximo arquivo",
+    "resultado": "funcionou",
+    "observacao": "7 testes com repositório falso. Mostram que só o hash é gravado e que a mesma senha gera hashes diferentes (salt). O go get do x/crypto atualizou também x/net, x/sys e x/text."
+  },
+  {
+    "numero": 30,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 6)",
+    "objetivo": "seguir para o arquivo 6: o handler com as 5 rotas",
+    "prompt": "Próximo arquivo",
+    "resultado": "funcionou",
+    "observacao": "8 testes pela API com banco real. Nenhuma resposta traz senha nem hash. A IA tirou a tag json:\"-\" por um instante para provar que o teste falha sem ela."
+  },
+  {
+    "numero": 31,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 7)",
+    "objetivo": "seguir para o arquivo 7: ligar as rotas no main.go e criar o admin no seed",
+    "prompt": "Próximo arquivo",
+    "resultado": "funcionou",
+    "observacao": "A IA achou no seed um DELETE FROM sqlite_sequence que reaproveitaria ids de usuários apagados e corrigiu com teste. Provou as rotas com curl numa API real, em banco temporário."
+  },
+  {
+    "numero": 32,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (tarefas da issue)",
+    "objetivo": "autorizar a marcação das 8 caixas provadas",
+    "prompt": "Sim, marcar as 8",
+    "resultado": "funcionou",
+    "observacao": "A primeira tentativa da IA de marcar as caixas foi bloqueada pelo sistema de permissões, porque eu ainda não tinha autorizado. Depois da minha autorização, as 8 caixas foram marcadas."
+  },
+  {
+    "numero": 33,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (seed do admin)",
+    "objetivo": "rodar o seed com a senha do admin",
+    "prompt": "[colei a saída do terminal: ADMIN_SENHA=... go run . seed -> 'ADMIN_SENHA' não é reconhecido como um comando interno ou externo]",
+    "resultado": "deu erro",
+    "observacao": "Usei a sintaxe de bash no Prompt de Comando (cmd). A IA explicou que no cmd são dois comandos (set e go run) e avisou que a senha que colei no chat devia ser considerada exposta."
+  },
+  {
+    "numero": 34,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (seed do admin)",
+    "objetivo": "rodar o seed depois da correção",
+    "prompt": "[colei a saída do terminal: go run . seed -> go: cannot find main module, but found .git/config]",
+    "resultado": "deu erro",
+    "observacao": "Rodei o comando na pasta errada (a raiz do projeto, e não a pasta backend). A IA conferiu que nada foi criado por engano, orientou a entrar em backend e a trocar a senha por uma completamente diferente."
+  },
+  {
+    "numero": 35,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (seed do admin)",
+    "objetivo": "aprender a validar que a senha virou hash",
+    "prompt": "como faço o teste pra validar que a senha virou o hash?",
+    "resultado": "entendi",
+    "observacao": "A IA ensinou a consulta no banco (esperado: $2a$10$ e tamanho 60) e o findstr para provar que a senha em texto não está no arquivo."
+  },
+  {
+    "numero": 36,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (visão geral)",
+    "objetivo": "entender se o front já deveria ter acesso de usuário nesta fase",
+    "prompt": "deu certo! Dúvida, nessa fase do projeto eu já deveria ter mudanças no front com acesso de usuário, ou tudo foi só implementado no backend as questões de segurança?",
+    "resultado": "entendi",
+    "observacao": "A IA explicou que o front só muda na issue #5, depois do login (#2) e dos papéis (#3). Ao tentar commitar o crm.db com o admin, o sistema bloqueou por risco de credencial em repositório público."
+  },
+  {
+    "numero": 37,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (crm.db)",
+    "objetivo": "decidir como tratar o crm.db modificado",
+    "prompt": "Restaurar, sem admin no Git",
+    "resultado": "funcionou",
+    "observacao": "O crm.db voltou à versão do Git, sem a tabela de usuários e sem hash. O admin é criado na primeira execução."
+  },
+  {
+    "numero": 38,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (crm.db)",
+    "objetivo": "entender o que preciso comprovar sobre o crm.db",
+    "prompt": "oque eu preciso comprovar do crm.db?",
+    "resultado": "entendi",
+    "observacao": "A IA explicou as duas provas do critério (hash começando com $2a$ e senha em texto ausente) e como fazê-las num banco temporário, sem commitar nada."
+  },
+  {
+    "numero": 39,
+    "data": "2026-11-12",
+    "ia": "claude",
+    "passo": "Desafio 2 - issue #1 (arquivo 8)",
+    "objetivo": "avisar que o critério do crm.db foi comprovado e seguir para o fim da issue",
+    "prompt": "Feito, rodei os testes, deu certo e marquei o ultimo critério de aceite da issue",
+    "resultado": "funcionou",
+    "observacao": "Com isso as 11 caixas da issue #1 ficaram marcadas. A IA então atualizou o README (administrador inicial, rotas, erros e avisos) e este prompts.json."
   }
 ]
