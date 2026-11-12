@@ -1,15 +1,30 @@
 package main
 
 import (
+	"context"
+	cripto "crypto/rand"
 	"database/sql"
+	"encoding/base64"
+	"errors"
 	"fmt"
+	"log"
 	"math/rand"
+	"os"
 	"time"
 
 	funil "github.com/George-Alves/desafio-enviepro/backend/internal/funil/domain/entity"
+	usuarioRepo "github.com/George-Alves/desafio-enviepro/backend/internal/usuario/adapter/repository"
+	usuarioUC "github.com/George-Alves/desafio-enviepro/backend/internal/usuario/app/usecase"
+	usuario "github.com/George-Alves/desafio-enviepro/backend/internal/usuario/domain/entity"
+	usuarioPorts "github.com/George-Alves/desafio-enviepro/backend/internal/usuario/domain/ports"
 )
 
 const formatoData = "2006-01-02"
+
+const (
+	adminNome  = "Administrador"
+	adminEmail = "admin@enviepro.com"
+)
 
 var (
 	nomesClientes = []string{
@@ -46,7 +61,9 @@ func semear(db *sql.DB, agora time.Time) error {
 			return err
 		}
 	}
-	if _, err := tx.Exec("DELETE FROM sqlite_sequence"); err != nil {
+	// Só zera a numeração das tabelas fictícias. A de usuarios fica: se o último usuário foi
+	// apagado, o id dele não pode ser reaproveitado por outra pessoa.
+	if _, err := tx.Exec("DELETE FROM sqlite_sequence WHERE name IN ('vendas', 'oportunidades', 'clientes')"); err != nil {
 		return err
 	}
 
@@ -112,4 +129,72 @@ func semear(db *sql.DB, agora time.Time) error {
 	}
 
 	return tx.Commit()
+}
+
+// gerarSenhaAleatoria sorteia uma senha forte de 16 caracteres com o gerador seguro do
+// sistema (crypto/rand), e não com o math/rand, que é previsível.
+func gerarSenhaAleatoria() (string, error) {
+	b := make([]byte, 12)
+	if _, err := cripto.Read(b); err != nil {
+		return "", err
+	}
+	return base64.RawURLEncoding.EncodeToString(b), nil
+}
+
+// garantirAdmin cria o administrador inicial, mas só se ainda não existir nenhum.
+// Usa o mesmo caso de uso da API, então a validação e o bcrypt valem aqui também.
+// Se senhaConfigurada estiver vazia, sorteia uma senha e a devolve em senhaGerada.
+func garantirAdmin(ctx context.Context, db *sql.DB, senhaConfigurada string) (criado bool, senhaGerada string, err error) {
+	repo := usuarioRepo.NewSQLiteUsuarioRepository(db)
+
+	existentes, err := usuarioUC.NewListarUsuarios(repo).Executar(ctx)
+	if err != nil {
+		return false, "", err
+	}
+	for _, u := range existentes {
+		if u.Papel == usuario.PapelAdmin {
+			return false, "", nil
+		}
+	}
+
+	senha := senhaConfigurada
+	if senha == "" {
+		if senha, err = gerarSenhaAleatoria(); err != nil {
+			return false, "", err
+		}
+		senhaGerada = senha
+	}
+
+	_, err = usuarioUC.NewCriarUsuario(repo).Executar(ctx, usuarioUC.DadosNovoUsuario{
+		Nome: adminNome, Email: adminEmail, Senha: senha, Papel: usuario.PapelAdmin,
+	})
+	var invalido usuario.ErrosValidacao
+	switch {
+	case err == nil:
+		return true, senhaGerada, nil
+	case senhaConfigurada != "" && errors.As(err, &invalido):
+		return false, "", fmt.Errorf("ADMIN_SENHA inválida: %w", err)
+	case errors.Is(err, usuarioPorts.ErrEmailJaCadastrado):
+		return false, "", fmt.Errorf("já existe um usuário com o e-mail %s que não é administrador", adminEmail)
+	}
+	return false, "", err
+}
+
+// prepararAdmin lê ADMIN_SENHA, garante o administrador inicial e conta no log o que aconteceu.
+func prepararAdmin(db *sql.DB) error {
+	configurada := os.Getenv("ADMIN_SENHA")
+	criado, gerada, err := garantirAdmin(context.Background(), db, configurada)
+	if err != nil {
+		return err
+	}
+	switch {
+	case criado && gerada != "":
+		log.Printf("Administrador criado: %s | senha sorteada: %s", adminEmail, gerada)
+		log.Println("ANOTE A SENHA AGORA: ela não será mostrada de novo. Para escolher a sua, defina ADMIN_SENHA antes de iniciar.")
+	case criado:
+		log.Printf("Administrador criado: %s (senha definida por ADMIN_SENHA)", adminEmail)
+	case configurada != "":
+		log.Println("ADMIN_SENHA ignorada: já existe um administrador. A senha dele não é alterada.")
+	}
+	return nil
 }
