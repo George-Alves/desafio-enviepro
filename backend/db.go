@@ -33,6 +33,14 @@ CREATE TABLE IF NOT EXISTS vendas (
 	data       TEXT NOT NULL,
 	produto    TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS usuarios (
+	id         INTEGER PRIMARY KEY AUTOINCREMENT,
+	nome       TEXT NOT NULL,
+	email      TEXT NOT NULL UNIQUE COLLATE NOCASE,
+	senha_hash TEXT NOT NULL,
+	papel      TEXT NOT NULL CHECK (papel IN ('admin', 'vendedor')),
+	criado_em  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+);
 `
 
 // abrirBanco abre (ou cria) o arquivo SQLite e garante que as tabelas existem.
