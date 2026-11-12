@@ -41,6 +41,8 @@ go run .
 
 O banco `backend/crm.db` já vem no repositório com dados fictícios (20 clientes, 30 oportunidades e 25 vendas). Se o arquivo não existir ou estiver vazio, o programa cria e popula tudo sozinho. Quando aparecer `API rodando em http://localhost:8080`, deixe esse terminal aberto.
 
+Na primeira execução também é criado o **administrador inicial** (`admin@enviepro.com`). A senha dele aparece no terminal, ou você escolhe a sua: veja [Usuários e administrador inicial](#usuários-e-administrador-inicial).
+
 Para conferir, abra <http://localhost:8080/clientes> no navegador: deve aparecer uma lista em JSON.
 
 ### 3. Front-end (terminal 2)
@@ -79,14 +81,50 @@ O front pode abrir em qualquer porta do `localhost`: se a 3000 estiver ocupada, 
 
 O arquivo `backend/crm.db` foi gerado pelo `seed.go` e está no repositório. As datas dos dados são calculadas a partir do dia em que o seed rodou (09/11/2026). Por isso, com o passar do tempo, o "resumo do mês" pode ficar vazio e os clientes aparecem com mais dias sem contato.
 
-Para apagar tudo e gerar os dados de novo, com datas relativas a hoje, com o back-end parado:
+O `crm.db` do repositório **não tem usuários**: a tabela `usuarios` e o administrador nascem na primeira execução (veja a próxima seção).
+
+Para apagar os dados fictícios (clientes, oportunidades e vendas) e gerá-los de novo, com datas relativas a hoje, com o back-end parado:
 
 ```bash
 cd backend
 go run . seed
 ```
 
+O seed **não apaga usuários**. Se ainda não existir nenhum administrador, ele também cria um.
+
 Para ver que a tela vem do banco, mude um dado (rodando o seed de novo ou editando o `crm.db`), recarregue a página do CRM e veja os números mudarem.
+
+## Usuários e administrador inicial
+
+Os usuários ficam na tabela `usuarios`. **Senha nenhuma é guardada**: só o hash gerado pelo bcrypt (começa com `$2a$`). O e-mail é único (não diferencia maiúsculas) e o papel só pode ser `admin` ou `vendedor`.
+
+Ao iniciar a API (ou rodar `go run . seed`), se **não existir nenhum administrador**, é criado o usuário `admin@enviepro.com`:
+
+- Com a variável de ambiente **`ADMIN_SENHA`** definida, ela é a senha dele (mínimo de 8 caracteres).
+- Sem a variável, uma senha forte é **sorteada e mostrada uma única vez** no terminal. Anote na hora: ela não aparece de novo.
+- `ADMIN_SENHA` só vale na criação. Se o administrador já existe, a variável é ignorada e a senha dele não muda.
+
+Para escolher a senha, defina a variável **antes** de iniciar, no mesmo terminal. Cada terminal tem uma sintaxe:
+
+Prompt de Comando (cmd), em dois comandos:
+```bat
+set "ADMIN_SENHA=sua-senha-aqui"
+go run .
+```
+
+PowerShell:
+```powershell
+$env:ADMIN_SENHA="sua-senha-aqui"; go run .
+```
+
+Git Bash, macOS ou Linux:
+```bash
+ADMIN_SENHA="sua-senha-aqui" go run .
+```
+
+O `crm.db` do repositório não traz o administrador de propósito: o repositório é público, e um hash de senha publicado pode ser atacado offline.
+
+> **Atenção:** as rotas de usuário ainda **não exigem login**. Qualquer pessoa que alcance a API pode listar, criar e apagar usuários, inclusive administradores. O login (JWT) e o controle por papel vêm nas próximas etapas. Não coloque esta versão num servidor público.
 
 ## Rotas da API
 
@@ -96,6 +134,32 @@ Para ver que a tela vem do banco, mude um dado (rodando o seed de novo ou editan
 | `GET /funil` | quantidade e valor de oportunidades em cada etapa, na ordem do funil |
 | `GET /vendas/resumo` | total, quantidade e ticket médio das vendas do mês atual |
 | `GET /vendas` | lista de vendas, da mais recente para a mais antiga |
+| `POST /usuarios` | cria um usuário (`nome`, `email`, `senha`, `papel`) e devolve **201** com o usuário, sem senha nem hash |
+| `GET /usuarios` | lista de usuários (`[]` quando não há nenhum) |
+| `GET /usuarios/:id` | um usuário, ou **404** |
+| `PUT /usuarios/:id` | atualiza nome, e-mail e papel. A `senha` é opcional: se vier, troca; se não vier, mantém a atual |
+| `DELETE /usuarios/:id` | apaga e devolve **204** |
+
+Nenhuma resposta de usuário traz senha nem hash. Campos extras no JSON, como `id` ou `senha_hash`, são ignorados.
+
+Os erros das rotas de usuário vêm sempre no formato `{"erro": "mensagem"}`:
+
+| Código | Quando | Exemplo de mensagem |
+|---|---|---|
+| **400** | dado inválido (todas as mensagens vêm juntas) ou id que não é um número | `A senha deve ter no mínimo 8 caracteres.` |
+| **404** | o id não existe | `Usuário não encontrado.` |
+| **409** | e-mail já cadastrado | `Este e-mail já está cadastrado.` |
+| **500** | erro inesperado (o detalhe fica só no log do servidor) | `Erro interno do servidor.` |
+
+Exemplo para criar um usuário. Git Bash, macOS ou Linux:
+```bash
+curl -X POST http://localhost:8080/usuarios -H "Content-Type: application/json" -d '{"nome":"Vera","email":"vera@teste.com","senha":"senha-forte-1","papel":"vendedor"}'
+```
+
+PowerShell:
+```powershell
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/usuarios -ContentType "application/json" -Body '{"nome":"Vera","email":"vera@teste.com","senha":"senha-forte-1","papel":"vendedor"}'
+```
 
 ## Testes e verificações
 
@@ -111,7 +175,9 @@ npm run lint
 npm run build
 ```
 
-Os testes do back-end cobrem as regras de negócio com repositórios falsos (limite de 15 dias, funil com etapas vazias, ticket médio sem vendas), as 4 rotas com um banco de verdade e o CORS.
+Os testes do back-end cobrem as regras de negócio com repositórios falsos (limite de 15 dias, funil com etapas vazias, ticket médio sem vendas), as rotas com um banco de verdade e o CORS.
+
+Os testes de usuário cobrem as regras de validação, o hash bcrypt (a senha em texto nunca é gravada e a mesma senha gera hashes diferentes), o e-mail único, os códigos HTTP, a garantia de que nenhuma resposta contém hash e a criação do administrador inicial.
 
 ## Arquitetura
 
@@ -119,7 +185,7 @@ O projeto segue a ideia do padrão de projetos do Atlantis, em tamanho reduzido 
 
 ### Back-end (`backend/`): Clean Architecture com Portas e Adaptadores
 
-Cada domínio (`cliente`, `funil`, `venda`) tem a mesma estrutura em `backend/internal/<domínio>/`:
+Cada domínio (`cliente`, `funil`, `venda` e `usuario`) tem a mesma estrutura em `backend/internal/<domínio>/`:
 
 | Pasta | Função |
 |---|---|
@@ -129,7 +195,7 @@ Cada domínio (`cliente`, `funil`, `venda`) tem a mesma estrutura em `backend/in
 | `adapter/handler` | Rotas HTTP (Gin) e o formato JSON da resposta |
 | `adapter/repository` | Implementação das interfaces com SQL no SQLite |
 
-Arquivos na raiz de `backend/`: `main.go` (liga as peças e sobe a API), `db.go` (conexão e tabelas) e `seed.go` (dados fictícios). `internal/shared/middleware` guarda o CORS.
+Arquivos na raiz de `backend/`: `main.go` (liga as peças e sobe a API), `db.go` (conexão e tabelas) e `seed.go` (dados fictícios e administrador inicial). `internal/shared/middleware` guarda o CORS.
 
 ### Front-end (`frontend/`): por features
 
