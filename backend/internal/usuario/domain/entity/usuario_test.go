@@ -1,10 +1,21 @@
 package entity
 
 import (
+	"encoding/json"
 	"errors"
 	"strings"
 	"testing"
 )
+
+func TestUsuario_SenhaHashNuncaVaiParaOJSON(t *testing.T) {
+	b, err := json.Marshal(Usuario{ID: 1, Nome: "Ana", Email: "ana@teste.com", SenhaHash: "$2a$10$segredo", Papel: PapelAdmin})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(b), "segredo") || strings.Contains(strings.ToLower(string(b)), "senha") {
+		t.Errorf("o hash não pode aparecer no JSON da entidade: %s", b)
+	}
+}
 
 func TestNormalizarEmail_TiraEspacosEPoeEmMinusculas(t *testing.T) {
 	if got := NormalizarEmail("  Ana@Teste.COM \n"); got != "ana@teste.com" {

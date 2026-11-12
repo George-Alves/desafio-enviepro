@@ -19,11 +19,12 @@ const (
 )
 
 // Usuario é quem acessa o CRM. Guarda só o hash da senha, nunca a senha em si.
+// O hash tem a tag json:"-": mesmo que alguém serialize a entidade por engano, ele não sai.
 type Usuario struct {
 	ID        int64
 	Nome      string
 	Email     string
-	SenhaHash string
+	SenhaHash string `json:"-"`
 	Papel     string
 	CriadoEm  time.Time
 }
